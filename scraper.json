@@ -1,5 +1,0 @@
-# create headless webdriver
-op = webdriver.ChromeOptions()
-op.add_argument("headless")
-path = "chromedriver.exe"
-driver = webdriver.Chrome(path, options=op)
