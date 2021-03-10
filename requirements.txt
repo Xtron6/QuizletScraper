@@ -1,0 +1,14 @@
+requests
+bs4
+
+    # Sign into Facebook to see all questions
+    facebook = driver.find_element_by_xpath('//svg[@class="UIIcon--facebook-round"]').text
+    facebook.click()
+    # Sign Into Blackboard
+    f = driver.find_element_by_name("email")
+    f.send_keys(creds[2])
+    s = driver.find_element_by_name("pass")
+    s.send_keys(creds[3])
+
+    p.send_keys(Keys.RETURN)
+    print("Login Success")

@@ -10,6 +10,8 @@ from selenium.webdriver.support import expected_conditions as EC
 # misc imports
 import time
 
+#import Google scrape (lxml)
+
 # set url and paths
 DRIVER_PATH = "drivers/chromedriver.exe"
 url = "https://blackboard.utdl.edu"
@@ -39,8 +41,8 @@ except:
 
 # find quiz
 try:
-    # wait 60 seconds to find quiz before forgoing search for quiz
-    element = WebDriverWait(driver, 60).until(
+    # wait 120 seconds to find quiz before forgoing search for quiz
+    element = WebDriverWait(driver, 120).until(
         EC.presence_of_element_located((By.ID, "saveButton_1"))
     )
     # found open quiz
@@ -56,20 +58,29 @@ except:
     driver.quit()
     exit()
 
-# chceck for answers
+# check for answers
 try:
     # create headless webdriver on google
-    url = "https://www.google.com/"
+    query = (content)
+    query = query.replace(' ', '+')
+    url = f"https://google.com/search?q={query}"
     driver = webdriver.Chrome(executable_path=DRIVER_PATH)
     driver.get(url)
     # google question
-    search = driver.find_element_by_name("q")
-    search.send_keys(content)
-    search.send_keys(Keys.RETURN)  # hit return after you enter search text
-    time.sleep(3)  # sleep for 5 seconds so you can see the results
-    driver.find_element_by_xpath('//*[@class="LC20lb DKV0Md"]').click()
-    print("headless success")
+    driver.find_element_by_partial_link_text("Quizlet").click()
+    print("Close matching Quizlet found.")
 except:
     print("failure to search google")
     driver.quit()
     exit()
+try:   
+    print("There is no Facebook account to sign in to.")
+    driver.find_element_by_xpath("//span[contains(text(), 'New Moon')]").click()
+    print("Printed immediately.")
+    copiedText = WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.CSS_SELECTOR, "span.TermText"))).text
+    print(copiedText)
+    answer = driver.find_element_by_xpath("//span[contains(text(), 'New Moon')]/following-sibling::span")
+    print(answer)
+    print(copiedText)
+except:
+    print("error message")
